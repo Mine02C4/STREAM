@@ -91,7 +91,8 @@
  *          per array.
  */
 #ifndef STREAM_ARRAY_SIZE
-#   define STREAM_ARRAY_SIZE	10000000
+//#   define STREAM_ARRAY_SIZE	10000000
+#   define STREAM_ARRAY_SIZE	1000
 #endif
 
 /*  2) STREAM runs each kernel "NTIMES" times and reports the *best* result
@@ -109,7 +110,7 @@
 #endif
 #endif
 #ifndef NTIMES
-#   define NTIMES	10
+#   define NTIMES	1
 #endif
 
 /*  Users are allowed to modify the "OFFSET" variable, which *may* change the
@@ -303,6 +304,11 @@ main()
     
     /*	--- MAIN LOOP --- repeat test cases NTIMES times --- */
 
+#ifdef M5
+    m5_checkpoint(0, 0);
+    m5_reset_stats(0, 0);
+#endif
+
     scalar = 3.0;
     for (k=0; k<NTIMES; k++)
 	{
@@ -346,6 +352,11 @@ main()
 #endif
 	times[3][k] = mysecond() - times[3][k];
 	}
+
+#ifdef m5
+    m5_dump_stats(0, 0);
+    m5_exit(0);
+#endif
 
     /*	--- SUMMARY --- */
 
