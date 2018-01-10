@@ -1,0 +1,13 @@
+## Editor backup and swap files
+*~
+.\#*
+\#**\#
+.*.sw[op]
+.sw[op]
+*.bak
+
+## Output and object files
+*.exe
+*.out
+*.o
+
