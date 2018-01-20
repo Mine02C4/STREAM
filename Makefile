@@ -4,10 +4,19 @@ CFLAGS = -O2 -fopenmp
 FC = gfortran-4.9
 FFLAGS = -O2 -fopenmp
 
-all: stream_gem5.out stream.out
+ASIZES := 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000
+M5OUTS := $(addprefix stream_gem5.,$(addsuffix .out,$(ASIZES)))
+
+all: stream_gem5.out stream.out $(M5OUTS)
 
 stream_gem5.out: stream_gem5.o m5op_x86.o
 	$(CC) $(CFLAGS) -static -o $@ -lrt $^
+
+stream_gem5.%.out: stream_gem5.%.o m5op_x86.o
+	$(CC) $(CFLAGS) -static -o $@ -lrt $^
+
+stream_gem5.%.o: stream_gem5.c m5op.h
+	$(CC) $(CFLAGS) -c -DM5 -DSTREAM_ARRAY_SIZE=$* -o $@ $<
 
 stream_gem5.o: stream_gem5.c m5op.h
 	$(CC) $(CFLAGS) -c -DM5 -o $@ $<
