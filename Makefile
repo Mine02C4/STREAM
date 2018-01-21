@@ -6,8 +6,9 @@ FFLAGS = -O2 -fopenmp
 
 ASIZES := 1000 2000 3000 4000 5000 6000 7000 8000 9000 10000
 M5OUTS := $(addprefix stream_gem5.,$(addsuffix .out,$(ASIZES)))
+COUTS := $(addprefix stream.,$(addsuffix .out,$(ASIZES)))
 
-all: stream_gem5.out stream.out $(M5OUTS)
+all: stream_gem5.out stream.out $(M5OUTS) $(COUTS)
 
 stream_gem5.out: stream_gem5.o m5op_x86.o
 	$(CC) $(CFLAGS) -static -o $@ -lrt $^
@@ -23,6 +24,9 @@ stream_gem5.o: stream_gem5.c m5op.h
 
 stream.out: stream_gem5.c
 	$(CC) $(CFLAGS) -o $@ $<
+
+stream.%.out: stream_gem5.c
+	$(CC) $(CFLAGS) -DSTREAM_ARRAY_SIZE=$* -o $@ $<
 
 stream_f.exe: stream.f mysecond.o
 	$(CC) $(CFLAGS) -c mysecond.c

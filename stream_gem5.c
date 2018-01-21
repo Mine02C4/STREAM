@@ -353,7 +353,7 @@ main()
 	times[3][k] = mysecond() - times[3][k];
 	}
 
-#ifdef m5
+#ifdef M5
     m5_dump_stats(0, 0);
     m5_exit(0);
 #endif
